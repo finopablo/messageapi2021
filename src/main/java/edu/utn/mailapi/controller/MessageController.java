@@ -38,4 +38,9 @@ public class MessageController {
         return messageDao.getSentByUser(user);
     }
 
+
+    public Message getMessageById(Integer id) {
+        return messageDao.get(id);
+    }
+
 }

@@ -7,7 +7,7 @@ import java.util.Objects;
 
 public class Message {
 
-    String uuid;
+    Integer id;
     User from;
     String subject;
     String body;
@@ -15,8 +15,8 @@ public class Message {
     List<Recipient> to;
     List<Attachment> attachments;
 
-    public Message(String uuid, User from, String subject, String body, LocalDate date, List<Recipient> to, List<Attachment> attachments) {
-        this.uuid = uuid;
+    public Message(Integer id, User from, String subject, String body, LocalDate date, List<Recipient> to, List<Attachment> attachments) {
+        this.id = id;
         this.from = from;
         this.subject = subject;
         this.body = body;
@@ -35,12 +35,12 @@ public class Message {
     }
 
 
-    public String getUuid() {
-        return uuid;
+    public Integer getId() {
+        return id;
     }
 
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public User getFrom() {
@@ -96,7 +96,7 @@ public class Message {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Message message = (Message) o;
-        return Objects.equals(uuid, message.uuid) &&
+        return Objects.equals(id, message.id) &&
                 Objects.equals(from, message.from) &&
                 Objects.equals(subject, message.subject) &&
                 Objects.equals(body, message.body) &&
@@ -107,13 +107,13 @@ public class Message {
 
     @Override
     public int hashCode() {
-        return Objects.hash(uuid, from, subject, body, date, to, attachments);
+        return Objects.hash(id, from, subject, body, date, to, attachments);
     }
 
     @Override
     public String toString() {
         return "Message{" +
-                "uuid='" + uuid + '\'' +
+                "id='" + id + '\'' +
                 ", from=" + from +
                 ", subject='" + subject + '\'' +
                 ", body='" + body + '\'' +

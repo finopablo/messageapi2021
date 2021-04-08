@@ -2,16 +2,20 @@ package edu.utn.mailapi;
 
 import edu.utn.mailapi.controller.MessageController;
 import edu.utn.mailapi.controller.UserController;
+import edu.utn.mailapi.domain.Message;
 import edu.utn.mailapi.domain.Recipient;
 import edu.utn.mailapi.domain.RecipientType;
 import edu.utn.mailapi.domain.User;
+import edu.utn.mailapi.exceptions.DatabaseConnectionException;
 import edu.utn.mailapi.exceptions.InvalidUserPasswordException;
 import edu.utn.mailapi.persistence.MessageDao;
 import edu.utn.mailapi.persistence.UserDao;
-import edu.utn.mailapi.persistence.memory.MessageMemoryDao;
-import edu.utn.mailapi.persistence.memory.UserMemoryDao;
+import edu.utn.mailapi.persistence.mysql.MessageMySqlDao;
 import edu.utn.mailapi.persistence.mysql.UserMySqlDao;
 
+import java.io.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,17 +29,26 @@ public class Main {
     static MessageController messageController;
 
 
-    public static void main(String[] args) {
-        userDao = new UserMySqlDao();
-        messageDao = new MessageMemoryDao();
+    public static void main(String[] args) throws IllegalAccessException, InstantiationException, ClassNotFoundException, IOException {
+        Connection conn ;
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/mailapi2021?user=root&password=a");
+        } catch (Exception e) {
+            e.printStackTrace(
+            );
+            throw new DatabaseConnectionException();
+        }
 
+        userDao = new UserMySqlDao(conn);
+        messageDao = new MessageMySqlDao(conn, userDao);
         userController = new UserController(userDao);
         messageController = new MessageController(messageDao);
-        registerUsers();
+        Message message = messageController.getMessageById(128);
+        System.out.println(message);
 
-       // User u = userController.get("a' or '1'='1");
+        /*registerUsers();
 
-        System.exit(1);
         try {
             User loggedUser = userController.login("finopablo", "1234");
             //ENVIO MENSAJE A MI MISMO
@@ -45,18 +58,13 @@ public class Main {
             messageController.send(loggedUser, to , "Hola pero!!", "ola pero2 ", null );
 
 
-            //ENVIO A GERMAN !! YAY!
-            List<Recipient> to2 = new ArrayList<>();
-            to2.add(new Recipient(userController.get("gianottigerman"), RecipientType.TO));
-            messageController.send(loggedUser, to2, "Otro mensaje", "Otro mensaje pero mas lindo", null);
-            //BUSCO MI INBOX
-            messageController.getSentByUser(loggedUser).forEach(o -> System.out.println(o));
+
+            //messageController.getSentByUser(loggedUser).forEach(o -> System.out.println(o));
         } catch (InvalidUserPasswordException e) {
             System.out.println(e.getMessage());
         }
-
+*/
     }
-
 
     public static void registerUsers() {
         /**Registrar ususarios*/

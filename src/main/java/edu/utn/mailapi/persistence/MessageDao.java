@@ -5,7 +5,7 @@ import edu.utn.mailapi.domain.User;
 
 import java.util.List;
 
-public interface MessageDao extends Dao<Message, String> {
+public interface MessageDao extends Dao<Message, Integer> {
     List<Message> getReceivedByUser(User user);
     List<Message> getSentByUser(User user);
 }
