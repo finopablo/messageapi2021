@@ -16,9 +16,8 @@ public class UserController {
         this.userDao = userDao;
     }
 
-
     public List<User> getAll() {
-            return userDao.getAll();
+        return userDao.getAll();
     }
 
     public User login(String username, String password) throws InvalidUserPasswordException {
