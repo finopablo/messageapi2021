@@ -46,7 +46,6 @@ public class UserMySqlDao implements UserDao {
                 ps.setString(3, o.getName());
                 ps.setString(4, o.getLastName());
                 ps.execute();
-
             }
             return o;
         } catch (SQLException sqlExcetion) {
@@ -65,7 +64,6 @@ public class UserMySqlDao implements UserDao {
         } catch (SQLException sqlException) {
             throw new DatabaseConnectionException();
         }
-
     }
 
     @Override
