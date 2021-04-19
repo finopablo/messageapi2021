@@ -3,15 +3,19 @@ package edu.utn.mailapi.controller;
 import edu.utn.mailapi.domain.User;
 import edu.utn.mailapi.exceptions.InvalidUserPasswordException;
 import edu.utn.mailapi.persistence.UserDao;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+@Controller
 public class UserController {
 
     UserDao userDao;
 
+    @Autowired
     public UserController(UserDao userDao) {
         this.userDao = userDao;
     }

@@ -12,6 +12,8 @@ import edu.utn.mailapi.persistence.MessageDao;
 import edu.utn.mailapi.persistence.UserDao;
 import edu.utn.mailapi.persistence.mysql.MessageMySqlDao;
 import edu.utn.mailapi.persistence.mysql.UserMySqlDao;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.io.*;
 import java.sql.Connection;
@@ -30,7 +32,7 @@ public class Main {
 
 
     public static void main(String[] args) throws IllegalAccessException, InstantiationException, ClassNotFoundException, IOException {
-        Connection conn ;
+       /* Connection conn ;
         try {
             Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
             conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/mailapi2021?user=root&password=a");
@@ -46,6 +48,15 @@ public class Main {
         messageController = new MessageController(messageDao);
         Message message = messageController.getMessageById(128);
         System.out.println(message);
+       */
+        ApplicationContext context = new ClassPathXmlApplicationContext("context.xml");
+
+        UserController userController = context.getBean(UserController.class);
+
+
+
+        User user = userController.get("finopablo");
+
 
         /*registerUsers();
 

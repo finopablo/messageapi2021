@@ -4,17 +4,23 @@ import edu.utn.mailapi.domain.*;
 import edu.utn.mailapi.exceptions.DatabaseConnectionException;
 import edu.utn.mailapi.persistence.MessageDao;
 import edu.utn.mailapi.persistence.UserDao;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+
+@Repository
 public class MessageMySqlDao implements MessageDao {
+
     Connection conn;
     UserDao userDao;
 
-    public MessageMySqlDao(Connection conn , UserDao userDao) {
+
+    public MessageMySqlDao(@Autowired Connection conn , @Autowired UserDao userDao) {
         this.userDao = userDao;
         this.conn = conn;
 
