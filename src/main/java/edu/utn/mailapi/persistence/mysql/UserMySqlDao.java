@@ -11,12 +11,12 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-@Repository
+@Repository("userMySqlDao")
 public class UserMySqlDao implements UserDao {
     Connection conn;
 
-
-    public UserMySqlDao(@Autowired Connection conn) {
+    @Autowired
+    public UserMySqlDao(Connection conn) {
         this.conn = conn;
     }
 
