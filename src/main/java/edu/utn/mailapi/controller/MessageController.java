@@ -1,18 +1,25 @@
 package edu.utn.mailapi.controller;
 
+
 import edu.utn.mailapi.domain.Attachment;
 import edu.utn.mailapi.domain.Message;
 import edu.utn.mailapi.domain.Recipient;
 import edu.utn.mailapi.domain.User;
 import edu.utn.mailapi.persistence.MessageDao;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 
 import java.time.LocalDate;
 import java.util.List;
 
+
+@Controller
 public class MessageController {
+
 
     MessageDao messageDao;
 
+    @Autowired
     public MessageController(MessageDao messageDao) {
         this.messageDao = messageDao;
     }

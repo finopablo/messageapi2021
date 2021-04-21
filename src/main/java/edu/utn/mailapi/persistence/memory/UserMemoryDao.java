@@ -2,11 +2,13 @@ package edu.utn.mailapi.persistence.memory;
 
 import edu.utn.mailapi.domain.User;
 import edu.utn.mailapi.persistence.UserDao;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Repository("userMemoryDao")
 public class UserMemoryDao implements UserDao {
 
     List<User> users = new ArrayList<>();
