@@ -14,19 +14,4 @@ import java.sql.DriverManager;
 @PropertySource("classpath:app.properties")
 public class Config {
 
-    @Bean("Conexion")
-    public Connection getConnection(
-            @Value("${database.url}") String url,
-            @Value("${database.port}") String port,
-            @Value("${database.name}") String databaseName,
-            @Value("${database.user}") String user,
-            @Value("${database.password}") String password) {
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-            return DriverManager.getConnection("jdbc:mysql://" + url + ":" + port + "/" + databaseName, user, password);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new DatabaseConnectionException();
-        }
-    }
 }
