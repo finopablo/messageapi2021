@@ -29,25 +29,28 @@ public class MessageController {
     }
 
     public Message send(User from, List<Recipient> to, String body, String subject, List<Attachment> attachments) {
-        return messageDao.save(new Message(from, subject, body, LocalDate.now(), to, attachments));
+        Message m = Message.builder().from(from).subject(subject).body(body).date(LocalDate.now()).attachments(attachments).build();
+        m.setTo(to);
+
+        return messageDao.save(m);
     }
 
     public void remove(Message message) {
-        messageDao.remove(message);
+        messageDao.delete(message);
     }
 
     public List<Message> getReceivedByUser(User user) {
-        return messageDao.getReceivedByUser(user);
+        return null; // messageDao.getReceivedByUser(user);
     }
 
 
     public List<Message> getSentByUser(User user) {
-        return messageDao.getSentByUser(user);
+        return messageDao.findAllByFrom(user);
     }
 
 
     public Message getMessageById(Integer id) {
-        return messageDao.get(id);
+        return messageDao.findById(id).get();
     }
 
 }

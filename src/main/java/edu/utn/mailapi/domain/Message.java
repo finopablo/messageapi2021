@@ -1,124 +1,72 @@
 package edu.utn.mailapi.domain;
 
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Objects;
+import lombok.*;
 
+import javax.persistence.*;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@EqualsAndHashCode
+@Entity
+@Table(name = "messages")
 public class Message {
 
+    @Id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     Integer id;
-    User from;
+
+    @Column
     String subject;
+    @Column(name = "message", length = 255)
     String body;
+    @Column
     LocalDate date;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "message", fetch = FetchType.EAGER)
     List<Recipient> to;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "message",  fetch = FetchType.LAZY)
     List<Attachment> attachments;
 
-    public Message(Integer id, User from, String subject, String body, LocalDate date, List<Recipient> to, List<Attachment> attachments) {
-        this.id = id;
-        this.from = from;
-        this.subject = subject;
-        this.body = body;
-        this.date = date;
-        this.to = to;
-        this.attachments = attachments;
-    }
-
-    public Message(User from, String subject, String body, LocalDate date, List<Recipient> to, List<Attachment> attachments) {
-        this.from = from;
-        this.subject = subject;
-        this.body = body;
-        this.date = date;
-        this.to = to;
-        this.attachments = attachments;
-    }
+    @ManyToOne
+    @JoinColumn(name = "from_", nullable = false, updatable = false)
+    User from;
 
 
-    public Integer getId() {
-        return id;
+
+    public void addAttachment(Attachment attachment) {
+        attachments = Optional.ofNullable(attachments).orElse(new ArrayList<>());
+        attachments.add(attachment);
+        attachment.setMessage(this);
     }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public User getFrom() {
-        return from;
-    }
-
-    public void setFrom(User from) {
-        this.from = from;
-    }
-
-    public String getSubject() {
-        return subject;
-    }
-
-    public void setSubject(String subject) {
-        this.subject = subject;
-    }
-
-    public String getBody() {
-        return body;
-    }
-
-    public void setBody(String body) {
-        this.body = body;
-    }
-
-    public LocalDate getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
-
-    public List<Recipient> getTo() {
-        return to;
-    }
-
-    public void setTo(List<Recipient> to) {
-        this.to = to;
-    }
-
-    public List<Attachment> getAttachments() {
-        return attachments;
-    }
 
     public void setAttachments(List<Attachment> attachments) {
         this.attachments = attachments;
+        this.attachments.forEach( e-> e.setMessage(this));
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Message message = (Message) o;
-        return Objects.equals(id, message.id) &&
-                Objects.equals(from, message.from) &&
-                Objects.equals(subject, message.subject) &&
-                Objects.equals(body, message.body) &&
-                Objects.equals(date, message.date) &&
-                Objects.equals(to, message.to) &&
-                Objects.equals(attachments, message.attachments);
+
+
+
+    public void addRecipient(Recipient recipient) {
+        to = Optional.ofNullable(to).orElse(new ArrayList<>());
+        to.add(recipient);
+        recipient.setMessage(this);
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, from, subject, body, date, to, attachments);
+
+    public void setTo(List<Recipient> recipients) {
+        this.to = recipients;
+        this.to.forEach( e-> e.setMessage(this));
     }
 
-    @Override
-    public String toString() {
-        return "Message{" +
-                "id='" + id + '\'' +
-                ", from=" + from +
-                ", subject='" + subject + '\'' +
-                ", body='" + body + '\'' +
-                ", date=" + date +
-                ", to=" + to +
-                ", attachments=" + attachments +
-                '}';
-    }
+
 }

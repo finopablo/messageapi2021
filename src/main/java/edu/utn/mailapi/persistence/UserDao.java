@@ -1,8 +1,11 @@
 package edu.utn.mailapi.persistence;
 
 import edu.utn.mailapi.domain.User;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
-
-public interface UserDao extends Dao<User, String> {
-    User get(String username, String password);
+@Repository
+public interface UserDao extends CrudRepository<User, String> {
+    User findByUsernameAndPassword(String username, String password);
 }
